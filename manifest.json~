@@ -1,0 +1,22 @@
+{
+  "name": "MetaverseSearch",
+  "version": "1.0.0",
+  "description": "Search across multiple search engines from a single interface.",
+  "manifest_version": 3,
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["contentScript.js"]
+    }
+  ],
+  "permissions": ["activeTab", "scripting"],
+  "action": {
+    "default_popup": "popup.html"
+  }, 
+  "icons": {
+      "128": "icon128.png"
+  },
+  "background": {
+    "service_worker": "background.js"
+  }
+}
