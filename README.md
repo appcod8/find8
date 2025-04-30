@@ -9,7 +9,7 @@ Metaverse Search is a browser extension that allows you to search across multipl
 
 ## Installation
 ### From the GitHub Release
-1. Download the latest `.crx` release file from the [Releases page](https://github.com/appcod8/metaverse-search/releases).
+1. Download the latest `.crx` release file from the [Releases page](https://github.com/appcod8/metaversesearch/releases).
 2. Open the Brave or Chrome browser and navigate to `brave://extensions/` or `chrome://extensions/`.
 3. Enable "Developer mode" by toggling the switch in the top-right corner.
 4. Drag and drop the downloaded `.crx` file into the extensions page, or click the "Load unpacked" button and select the directory containing your extension files.
