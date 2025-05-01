@@ -28,6 +28,6 @@ git clone https://github.com/appcod8/metaverse-search.git
 4. Click the "Search" button to open the search results in a new tab.
 
 ## License
-This project is licensed under the [MIT License](LICENSE).
+This project is licensed under the [MIT License](https://mit-license.org/).
 
 Let me know if you have any other questions, or feature requests.
