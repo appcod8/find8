@@ -9,7 +9,7 @@
       "js": ["contentScript.js"]
     }
   ],
-  "permissions": ["activeTab", "scripting"],
+  "permissions": ["activeTab"],
   "action": {
     "default_popup": "popup.html"
   }, 
