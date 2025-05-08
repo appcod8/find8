@@ -9,10 +9,6 @@
       "js": ["contentScript.js"]
     }
   ],
-  "permissions": ["activeTab"],
-  "action": {
-    "default_popup": "popup.html"
-  }, 
   "icons": {
       "128": "icon128.png"
   },
