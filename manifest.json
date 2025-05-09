@@ -6,13 +6,13 @@
   "action": {
     "default_popup": "popup.html"
   },
-  "icons": {
-    "128": "icon128.png"
-  },
   "omnibox": {
   "keyword": "m"
   },
   "background": {
     "service_worker": "background.js"
+  },
+  "icons": {
+    "128": "icon128.png"
   }
 }
