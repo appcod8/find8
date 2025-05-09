@@ -51,5 +51,6 @@ function handleSearchRequest(query, url, sendResponse) {
   sendResponse({ message: "Search result opened in a new tab." });
 }
 
+
 // For logging a message to the console
 // console.log('Background script running');
