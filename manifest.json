@@ -9,6 +9,9 @@
   "icons": {
     "128": "icon128.png"
   },
+  "omnibox": {
+  "keyword": "m"
+  },
   "background": {
     "service_worker": "background.js"
   }
