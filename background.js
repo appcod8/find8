@@ -39,6 +39,5 @@ chrome.omnibox.onInputEntered.addListener((text) => {
 
 }
 
-// This is where you would put your background script code
-// For now, we're just logging a message to the console
+// For logging a message to the console
 // console.log('Background script running');
