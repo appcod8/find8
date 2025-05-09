@@ -18,11 +18,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if (query) {
       const engineUrls = {
-        "brave": "https://search.brave.com/search?q=",
-        "startpage": "https://www.startpage.com/do/search?query=",
         "google": "https://www.google.com/search?q=",
-        "duckduckgo": "https://duckduckgo.com/?q=",
+        "brave": "https://search.brave.com/search?q=",
         "bing": "https://www.bing.com/search?q=",
+        "duckduckgo": "https://duckduckgo.com/?q=",
+        "github": "https://github.com/search?q=",
+        "startpage": "https://www.startpage.com/do/search?query=",
+        "stackexchange": "https://stackexchange.com/search?q=",
+        "stackoverflow": "https://stackoverflow.com/search?q=",
+        "wikipedia": "https://en.wikipedia.org/w/index.php?title=Special:Search&search=",
         // Add more engines as needed
       };
 
