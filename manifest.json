@@ -1,6 +1,6 @@
 {
   "name": "MetaverseSearch",
-  "version": "1.3.1",
+  "version": "1.5.1",
   "description": "Search across multiple search engines from a single interface.",
   "manifest_version": 3,
   "action": {
