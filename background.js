@@ -16,24 +16,23 @@ chrome.omnibox.onInputEntered.addListener((text) => {
     case 'g':
       url = `https://github.com/search?q=${encodeURIComponent(query)}`;
       break;
-    default:
-      url = `https://www.google.com/search?q=${encodeURIComponent(text)}`;
-    break;
-      case 'b':
+    case 'b':
       url = `https://search.brave.com/search?q=${encodeURIComponent(query)}`;
-    break;
+      break;
     case 'w':
       url = `https://en.wikipedia.org/wiki/Special:Search?search=${encodeURIComponent(query)}`;
-    break;
+      break;
     case 's':
       url = `https://stackoverflow.com/search?q=${encodeURIComponent(query)}`;
-    break;
+      break;
     case 'd':
       url = `https://duckduckgo.com/?q=${encodeURIComponent(query)}`;
-    break;
+      break;
+    default:
+      url = `https://www.google.com/search?q=${encodeURIComponent(text)}`;
+  }   
 
   chrome.tabs.create({ url });  
-}
 });
 
 // Message listener for popup-initiated searches

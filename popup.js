@@ -23,9 +23,9 @@ document.addEventListener('DOMContentLoaded', function() {
         "bing": "https://www.bing.com/search?q=",
         "duckduckgo": "https://duckduckgo.com/?q=",
         "github": "https://github.com/search?q=",
-        "startpage": "https://www.startpage.com/do/search?query=",
         "stackexchange": "https://stackexchange.com/search?q=",
         "stackoverflow": "https://stackoverflow.com/search?q=",
+        "startpage": "https://www.startpage.com/do/search?query=",
         "wikipedia": "https://en.wikipedia.org/w/index.php?title=Special:Search&search=",
         // Add more engines as needed
       };
