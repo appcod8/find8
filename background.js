@@ -16,7 +16,7 @@ function handleSearchRequest(query, url, sendResponse) {
 }
 
 // Add omnibox function
-// Omnibox command handler (must be top-level!)
+// Omnibox command handler (top-level)
 chrome.omnibox.onInputEntered.addListener((text) => {
   const [prefix, ...queryParts] = text.trim().split(' ');
   const query = queryParts.join(' ');
