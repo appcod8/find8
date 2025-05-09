@@ -19,6 +19,18 @@ chrome.omnibox.onInputEntered.addListener((text) => {
     default:
       url = `https://www.google.com/search?q=${encodeURIComponent(text)}`;
   }
+      case 'b':
+      url = `https://search.brave.com/search?q=${encodeURIComponent(query)}`;
+  break;
+case 'w':
+      url = `https://en.wikipedia.org/wiki/Special:Search?search=${encodeURIComponent(query)}`;
+  break;
+case 's':
+      url = `https://stackoverflow.com/search?q=${encodeURIComponent(query)}`;
+  break;
+case 'd':
+      url = `https://duckduckgo.com/?q=${encodeURIComponent(query)}`;
+  break;
 
   chrome.tabs.create({ url });
 });
