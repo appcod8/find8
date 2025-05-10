@@ -1,47 +1,84 @@
 # MetaverseSearch
-Metaverse Search is a browser extension that allows you to search across multiple search engines from a single interface. It's designed to provide a seamless and efficient way to explore the "metaverse" of online information.
 
-## Privacy
-This extension does **not collect or store any user data.**
-No analytics, third-party scripts, or tracking. All searches happen locally through your browser.
+[![Chrome Web Store](https://img.shields.io/chrome-web-store/v/podlebodapccbabemoihfnpfhebfoogf?label=Install%20from%20Chrome%20Web%20Store)](https://chromewebstore.google.com/detail/metaversesearch/podlebodapccbabemoihfnpfhebfoogf)
 
-### Version 1.5.1 Updates
-**Omnibox shortcuts:** type m in the address bar, then add:
-- y cats → YouTube
-- r space → Reddit
-- g openai → GitHub
-- b privacy → Brave
-- w AI → Wikipedia
-- s chrome extension → Stack Overflow
-- Anything else defaults to Google
+**Metaverse Search** is a browser extension that lets you search across multiple search engines from a single interface.  
+It's designed to offer a fast, clean, privacy-respecting way to explore the "metaverse" of online knowledge.
+
+---
+
+## Privacy First
+
+This extension does **not collect or store any user data.**  
+No analytics, no tracking, no third-party scripts—everything runs locally in your browser.
+
+---
 
 ## Features
-- Search across popular search engines like Brave, Google, Bing, DuckDuckGo, and more
-- Easily switch between search engines with a dropdown menu
-- Open search results in a new tab for a distraction-free experience
-- Compact and user-friendly popup interface
+
+- Search across Brave, Google, Bing, DuckDuckGo, YouTube, Reddit, and more
+- Quickly switch between engines using a dropdown menu
+- Compact popup UI for quick access
+- **Omnibox support:** search straight from the address bar
+
+---
+
+## Version 1.5.1 Highlights
+
+Type `m` in your address bar, then enter a keyword:
+
+- `y cats` → YouTube search
+- `r space` → Reddit search
+- `g openai` → GitHub search
+- `b privacy` → Brave search
+- `w AI` → Wikipedia
+- `s chrome extension` → Stack Overflow
+- Anything else → defaults to Google
+
+---
 
 ## Installation
-### From the GitHub Release
-1. Download the latest `.crx` release file from the [Releases page](https://github.com/appcod8/metaversesearch/releases).
-2. Open the Brave or Chrome browser and navigate to `brave://extensions/` or `chrome://extensions/`.
-3. Enable "Developer mode" by toggling the switch in the top-right corner.
-4. Drag and drop the downloaded `.crx` file into the extensions page, or click the "Load unpacked" button and select the directory containing your extension files.
 
-### From the GitHub Repository
-1. Clone the repository:
-git clone https://github.com/appcod8/metaverse-search.git
-2. Open the Brave or Chrome browser and navigate to `brave://extensions/` or `chrome://extensions/`.
-3. Enable "Developer mode" by toggling the switch in the top-right corner.
-4. Click the "Load unpacked" button and select the `metaversesearch` directory.
+### From the Chrome Web Store
+Install directly:  
+[**→ MetaverseSearch on Chrome Web Store**](https://chromewebstore.google.com/detail/metaversesearch/podlebodapccbabemoihfnpfhebfoogf)
+
+### From GitHub Releases
+1. Download the latest `.crx` file from the [Releases page](https://github.com/appcod8/metaversesearch/releases)
+2. Go to `chrome://extensions/` or `brave://extensions/`
+3. Enable **Developer Mode**
+4. Drag and drop the `.crx` file
+
+### Load Unpacked (Dev mode)
+1. Clone the repo:
+2. Go to your browser’s `extensions` page
+3. Enable **Developer Mode**
+4. Click **Load unpacked**, and select the folder
+
+---
 
 ## Usage
-1. Open the Brave or Chrome browser and click on the Metaverse Search extension icon in the toolbar.
-2. Enter your search query in the input field.
-3. Select the desired search engine from the dropdown menu.
-4. Click the "Search" button to open the search results in a new tab.
+
+1. Click the MetaverseSearch icon in your browser toolbar
+2. Enter your search query
+3. Choose a search engine
+4. Hit "Search" — results open in a new tab
+
+Or just type `m` in your address bar for instant omnibox access.
+
+---
+
+## Philosophy
+
+This project is free and open—not monetized, not tracking you, and not tied to any corporate interest.  
+Built to prioritize **privacy, simplicity, and function over profit**. Feedback, forks, or ideas are always welcome.
+
+---
 
 ## License
-This project is licensed under the [MIT License](https://mit-license.org/).
 
-Let me know if you have any other questions, or feature requests.
+[MIT License](https://mit-license.org/)
+
+---
+
+Let me know if you have any questions, ideas, or want to collaborate.
