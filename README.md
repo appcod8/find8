@@ -1,11 +1,11 @@
 # MetaverseSearch
 Metaverse Search is a browser extension that allows you to search across multiple search engines from a single interface. It's designed to provide a seamless and efficient way to explore the "metaverse" of online information.
 
-##Privacy
+## Privacy
 This extension does not collect or store any user data.
 No analytics, third-party scripts, or tracking. All searches happen locally through your browser.
 
-##Version 1.5.1 Updates
+## Version 1.5.1 Updates
 Omnibox shortcuts: type m in the address bar, then add:
 y cats → YouTube
 r space → Reddit
