@@ -5,7 +5,7 @@
 ## Support This Project
 
 If you find MetaverseSearch useful and want to support its continued development, you can send a small tip (no platforms, no middlemen):
-**Monero-XMR donations welcome:** `45dQBvK6d1cdgfs1vVPc4Y7WBRBPuZDRV9E2tUxwdckST7TBDjMm54Zbkxvwiq7qj72u4k4LQSfkUgMADFXS1HsPGvw5Bxo`
+**Monero (XMR) donations welcome:** `45dQBvK6d1cdgfs1vVPc4Y7WBRBPuZDRV9E2tUxwdckST7TBDjMm54Zbkxvwiq7qj72u4k4LQSfkUgMADFXS1HsPGvw5Bxo`
 
 Thank you for using and supporting privacy-first tools.
 
