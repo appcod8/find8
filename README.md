@@ -6,14 +6,14 @@ This extension does not collect or store any user data.
 No analytics, third-party scripts, or tracking. All searches happen locally through your browser.
 
 ## Version 1.5.1 Updates
-** Omnibox shortcuts: ** type m in the address bar, then add:
+**Omnibox shortcuts:** type m in the address bar, then add:
 - y cats → YouTube
 - r space → Reddit
 - g openai → GitHub
 - b privacy → Brave
 - w AI → Wikipedia
 - s chrome extension → Stack Overflow
-Anything else defaults to Google
+- Anything else defaults to Google
 
 ## Features
 - Search across popular search engines like Brave, Google, Bing, DuckDuckGo, and more
