@@ -2,6 +2,8 @@
 
 [![Chrome Web Store](https://img.shields.io/chrome-web-store/v/podlebodapccbabemoihfnpfhebfoogf?label=Install%20from%20Chrome%20Web%20Store)](https://chromewebstore.google.com/detail/metaversesearch/podlebodapccbabemoihfnpfhebfoogf)
 
+![Monero QR](./monero_qr_optimized.png)
+
 ## Support This Project
 
 If you find MetaverseSearch useful and want to support its continued development, you can send a small tip (no platforms, no middlemen):
