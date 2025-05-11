@@ -1,6 +1,8 @@
 # MetaverseSearch
+
 **Metaverse Search** is a browser extension that lets you search across multiple search engines from a single interface.  
 It's designed to offer a fast, clean, privacy-respecting way to explore the "metaverse" of online knowledge.
+
 ---
 [![Chrome Web Store](https://img.shields.io/chrome-web-store/v/podlebodapccbabemoihfnpfhebfoogf?label=Install%20from%20Chrome%20Web%20Store)](https://chromewebstore.google.com/detail/metaversesearch/podlebodapccbabemoihfnpfhebfoogf)
 
