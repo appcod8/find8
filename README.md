@@ -1,7 +1,7 @@
 # MetaverseSearch
 
 [![Chrome Web Store](https://img.shields.io/chrome-web-store/v/podlebodapccbabemoihfnpfhebfoogf?label=Install%20from%20Chrome%20Web%20Store)](https://chromewebstore.google.com/detail/metaversesearch/podlebodapccbabemoihfnpfhebfoogf)
-
+<br>
 ![Monero QR](./monero_qr_optimized.png)
 
 ## Support This Project
