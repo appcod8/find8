@@ -8,14 +8,6 @@ It's designed to offer a fast, clean, privacy-respecting way to explore the "met
 
 ---
 
-## Support This Project
-
-If you find MetaverseSearch useful and want to support its continued development, you can send a small tip (no platforms, no middlemen):
-**Monero (XMR) donations welcome:** `45dQBvK6d1cdgfs1vVPc4Y7WBRBPuZDRV9E2tUxwdckST7TBDjMm54Zbkxvwiq7qj72u4k4LQSfkUgMADFXS1HsPGvw5Bxo`
-<br>
-![Monero QR](./monero_qr_optimized.png)
-Thank you for using and supporting privacy-first tools.
-
 ## Privacy First
 
 This extension does **not collect or store any user data.**  
@@ -96,4 +88,12 @@ Built to prioritize **privacy, simplicity, and function over profit**. Feedback,
 
 ---
 
-Let me know if you have any questions, ideas, or want to collaborate.
+## Support This Project
+
+If you find MetaverseSearch useful and want to support its continued development, you can send a small tip (no platforms, no middlemen):
+**Monero (XMR) donations welcome:** `45dQBvK6d1cdgfs1vVPc4Y7WBRBPuZDRV9E2tUxwdckST7TBDjMm54Zbkxvwiq7qj72u4k4LQSfkUgMADFXS1HsPGvw5Bxo`
+<br>
+![Monero QR](./monero_qr_optimized.png)
+Thank you for using and supporting privacy-first tools.
+
+
