@@ -17,7 +17,7 @@ No analytics, no tracking, no third-party scripts—everything runs locally in y
 
 ## Features
 
-- Search across Brave, Google, Bing, DuckDuckGo, YouTube, Reddit, and more
+- Search across Brave, Google, Bing, DuckDuckGo, YouTube, more will be added soon.
 - Quickly switch between engines using a dropdown menu
 - Compact popup UI for quick access
 - **Omnibox support:** search straight from the address bar
@@ -35,7 +35,6 @@ No analytics, no tracking, no third-party scripts—everything runs locally in y
 Type `m` in your address bar, then enter a keyword:
 
 - `y cats` → YouTube search
-- `r space` → Reddit search
 - `g openai` → GitHub search
 - `b privacy` → Brave search
 - `w AI` → Wikipedia
