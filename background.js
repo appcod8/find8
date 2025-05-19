@@ -10,9 +10,6 @@ chrome.omnibox.onInputEntered.addListener((text) => {
     case 'y':
       url = `https://www.youtube.com/results?search_query=${encodeURIComponent(query)}`;
       break;
-    case 'r':
-      url = `https://www.reddit.com/search/?q=${encodeURIComponent(query)}`;
-      break;
     case 'g':
       url = `https://github.com/search?q=${encodeURIComponent(query)}`;
       break;
