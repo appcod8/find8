@@ -1,4 +1,4 @@
-MetaverseSearch
+Find8
 Search across multiple platforms directly from your browser.
 
 What's New in v1.5.1
@@ -9,7 +9,6 @@ Optimized background code to add autocomplete suggestions.
 
 Omnibox support (address bar): type 'm' followed by a shortcut:
 y cats → YouTube
-r news → Reddit
 g openai → GitHub
 b privacy → Brave
 w AI → Wikipedia
