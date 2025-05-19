@@ -1,4 +1,4 @@
-# MetaverseSearch
+# Find8
 
 **Metaverse Search** is a browser extension that lets you search across multiple search engines from a single interface.  
 It's designed to offer a fast, clean, privacy-respecting way to explore the "metaverse" of online knowledge.
