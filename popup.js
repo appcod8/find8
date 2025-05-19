@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   function updateExtensionName() {
     const selectedEngine = searchEngine.value;
-    let extensionName = 'MetaverseSearch';
+    let extensionName = 'Find8';
     if (selectedEngine !== ' ') {
       extensionName += ` (${selectedEngine.charAt(0).toUpperCase() + selectedEngine.slice(1)})`;
     }
