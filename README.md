@@ -1,22 +1,17 @@
 # Find8
-
-**Find8** is a browser extension that lets you search across multiple search engines from a single interface.  
-It's designed to offer a fast, clean, privacy-respecting way to easily explore online knowledge.
-
+**Find8** is a browser extension that lets you search across multiple search engines from a single interface. It's designed to offer a fast, clean, privacy-respecting way to easily explore online knowledge.
 ---
 [![Chrome Web Store](https://img.shields.io/chrome-web-store/v/podlebodapccbabemoihfnpfhebfoogf?label=Install%20from%20Chrome%20Web%20Store)](https://chromewebstore.google.com/detail/find8/podlebodapccbabemoihfnpfhebfoogf)
 
 ---
 
 ## Privacy First
-
 This extension does **not collect or store any user data.**  
 No analytics, no tracking, no third-party scripts—everything runs locally in your browser.
 
 ---
 
 ## Features
-
 - Search across Brave, Google, Bing, DuckDuckGo, YouTube, more will be added soon.
 - Quickly switch between engines using a dropdown menu
 - Compact popup UI for quick access
@@ -26,7 +21,7 @@ No analytics, no tracking, no third-party scripts—everything runs locally in y
 
 ## Screenshot
 
-![Find8 Popup UI](find8_sc1.jpg)
+![Find8 Popup UI](fin8_sc1.jpg)
 
 ---
 
