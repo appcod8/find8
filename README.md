@@ -30,7 +30,7 @@ No analytics, no tracking, no third-party scripts—everything runs locally in y
 
 ---
 
-## Version 1.5.1 Highlights
+## Version 2.5.1 Highlights
 
 Type `m` in your address bar, then enter a keyword:
 
