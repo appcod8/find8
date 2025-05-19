@@ -22,7 +22,7 @@ No analytics, no tracking, no third-party scripts—everything runs locally in y
 
 ## Screenshot
 
-![Find8 Popup UI](./monero_qr_optimized.png)
+![Find8 Popup UI](./fin8_sc1.jpg)
 
 <br>
 
