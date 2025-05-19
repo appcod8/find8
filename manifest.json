@@ -7,7 +7,7 @@
     "default_popup": "popup.html"
   },
   "omnibox": {
-  "keyword": "m"
+  "keyword": "8"
   },
   "background": {
     "service_worker": "background.js"
