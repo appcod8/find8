@@ -1,6 +1,6 @@
 # Find8
 
-**Metaverse Search** is a browser extension that lets you search across multiple search engines from a single interface.  
+**Find8** is a browser extension that lets you search across multiple search engines from a single interface.  
 It's designed to offer a fast, clean, privacy-respecting way to explore the "metaverse" of online knowledge.
 
 ---
@@ -26,7 +26,7 @@ No analytics, no tracking, no third-party scripts—everything runs locally in y
 
 ## Screenshot
 
-![MetaverseSearch Popup UI](metaversesearch_screenshot.jpg)
+![Find8 Popup UI](find8_screenshot.jpg)
 
 ---
 
@@ -47,10 +47,10 @@ Type `m` in your address bar, then enter a keyword:
 
 ### From the Chrome Web Store
 Install directly:  
-[**→ MetaverseSearch on Chrome Web Store**](https://chromewebstore.google.com/detail/metaversesearch/podlebodapccbabemoihfnpfhebfoogf)
+[**→ MetaverseSearch on Chrome Web Store**](https://chromewebstore.google.com/deta
 
 ### From GitHub Releases
-1. Download the latest `.crx` file from the [Releases page](https://github.com/appcod8/metaversesearch/releases)
+1. Download the latest `.crx` file from the [Releases page](https://github.com/appcod8/find8/releases)
 2. Go to `chrome://extensions/` or `brave://extensions/`
 3. Enable **Developer Mode**
 4. Drag and drop the `.crx` file
@@ -65,7 +65,7 @@ Install directly:
 
 ## Usage
 
-1. Click the MetaverseSearch icon in your browser toolbar
+1. Click the Find8 icon in your browser toolbar
 2. Enter your search query
 3. Choose a search engine
 4. Hit "Search" — results open in a new tab
