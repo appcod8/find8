@@ -1,10 +1,10 @@
 # Find8
 
 **Find8** is a browser extension that lets you search across multiple search engines from a single interface.  
-It's designed to offer a fast, clean, privacy-respecting way to explore the "metaverse" of online knowledge.
+It's designed to offer a fast, clean, privacy-respecting way to easily explore online knowledge.
 
 ---
-[![Chrome Web Store](https://img.shields.io/chrome-web-store/v/podlebodapccbabemoihfnpfhebfoogf?label=Install%20from%20Chrome%20Web%20Store)](https://chromewebstore.google.com/detail/metaversesearch/podlebodapccbabemoihfnpfhebfoogf)
+[![Chrome Web Store](https://img.shields.io/chrome-web-store/v/podlebodapccbabemoihfnpfhebfoogf?label=Install%20from%20Chrome%20Web%20Store)](https://chromewebstore.google.com/detail/find8/podlebodapccbabemoihfnpfhebfoogf)
 
 ---
 
@@ -47,7 +47,7 @@ Type `m` in your address bar, then enter a keyword:
 
 ### From the Chrome Web Store
 Install directly:  
-[**→ MetaverseSearch on Chrome Web Store**](https://chromewebstore.google.com/deta
+[**→ Find8 on Chrome Web Store**](https://chromewebstore.google.com/detail/find8/podlebodapccbabemoihfnpfhebfoogf?authuser=0&hl=en&pli=1)
 
 ### From GitHub Releases
 1. Download the latest `.crx` file from the [Releases page](https://github.com/appcod8/find8/releases)
@@ -89,7 +89,7 @@ Built to prioritize **privacy, simplicity, and function over profit**. Feedback,
 
 ## Support This Project
 
-If you find MetaverseSearch useful and want to support its continued development, you can send a small tip (no platforms, no middlemen):
+If you find Find8 useful and want to support its continued development, you can send a small tip (no platforms, no middlemen):
 **Monero (XMR) donations welcome:** `45dQBvK6d1cdgfs1vVPc4Y7WBRBPuZDRV9E2tUxwdckST7TBDjMm54Zbkxvwiq7qj72u4k4LQSfkUgMADFXS1HsPGvw5Bxo`
 
 ![Monero QR](./monero_qr_optimized.png)
