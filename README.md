@@ -22,13 +22,15 @@ No analytics, no tracking, no third-party scripts—everything runs locally in y
 
 ## Screenshot
 
-![Find8 Popup UI](./fin8_sc1.jpg)
+![Find8 Popup UI](./monero_qr_optimized.png)
+
+<br>
 
 ---
 
 ## Version 2.5.1 Highlights
 
-Type `m` in your address bar, then enter a keyword:
+Type `f` in your address bar, then enter a keyword:
 
 - `y cats` → YouTube search
 - `g openai` → GitHub search
