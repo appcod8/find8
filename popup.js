@@ -43,7 +43,6 @@ document.addEventListener('DOMContentLoaded', function() {
     if (selectedEngine !== ' ') {
       extensionName += ` (${selectedEngine.charAt(0).toUpperCase() + selectedEngine.slice(1)})`;
     }
-
     document.getElementById('extensionName').textContent = extensionName;
     document.getElementById('extensionNameHeader').textContent = extensionName;
   }
@@ -74,4 +73,9 @@ document.getElementById('saveEngineBtn').addEventListener('click', () => {
   }
 });
 
-
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  if (request.action === "engineAdded") {
+    console.log("Engine added to storage:", request.engine);
+    loadEngines(); // Call your function to refresh the dropdown
+  }
+});
