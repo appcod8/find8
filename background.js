@@ -1,6 +1,5 @@
 // background.js
 
-// Omnibox command handler
 chrome.omnibox.onInputEntered.addListener((text) => {
   const [prefix, ...queryParts] = text.trim().split(' ');
   const query = queryParts.join(' ');
@@ -32,29 +31,33 @@ chrome.omnibox.onInputEntered.addListener((text) => {
   chrome.tabs.create({ url });
 });
 
-// Handle omnibox or popup search
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === "search") {
     handleSearchRequest(request.query, request.url, sendResponse);
   }
 
-  // Handle suggested engine from content script
-  else if (request.action === 'suggestSearchEngine') {
+  if (request.action === 'suggestSearchEngine') {
     const newEngine = request.engine;
-    console.log("Suggested engine:", newEngine);
 
-    // Save it temporarily
-    chrome.storage.local.set({ lastSuggestedEngine: newEngine }, () => {
-      console.log("Stored for confirmation");
+    chrome.storage.local.get({ engines: [] }, (data) => {
+      const engines = data.engines;
+      const exists = engines.some(e => e.url === newEngine.url);
+
+      if (!exists) {
+        engines.push(newEngine);
+        chrome.storage.local.set({ engines }, () => {
+          console.log("Engine added:", newEngine);
+          chrome.runtime.sendMessage({ action: "engineAdded", engine: newEngine });
+        });
+      } else {
+        console.log("Engine already exists:", newEngine);
+      }
     });
 
-    // Notify with badge
+    chrome.storage.local.set({ lastSuggestedEngine: newEngine });
     chrome.action.setBadgeText({ text: "✓" });
     chrome.action.setBadgeBackgroundColor({ color: "#4caf50" });
-
-    setTimeout(() => {
-      chrome.action.setBadgeText({ text: "" });
-    }, 5000);
+    setTimeout(() => chrome.action.setBadgeText({ text: "" }), 5000);
 
     sendResponse({ success: true });
   }
@@ -65,5 +68,4 @@ function handleSearchRequest(query, url, sendResponse) {
   sendResponse({ message: "Search result opened in a new tab." });
 }
 
-// Log to confirm script loaded
 console.log('Find8 background script running');
