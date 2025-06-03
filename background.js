@@ -44,6 +44,7 @@ function handleSearchRequest(query, url, sendResponse) {
   sendResponse({ message: "Search result opened in a new tab." });
 }
 
+// Suggest/Auto add found new search engine 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === "suggestSearchEngine") {
     console.log("Suggested engine:", request.engine);
