@@ -8,14 +8,12 @@ document.body.style.backgroundColor = "lightblue";
 // Add event listeners, other logic.
 
 (function () {
-  // Scan for search forms with method GET
   const forms = document.querySelectorAll('form[method="get"], form:not([method])');
 
   for (const form of forms) {
     const inputs = form.querySelectorAll('input[name]');
     let queryInput = null;
 
-    // Try to find a text input that looks like a search box
     for (const input of inputs) {
       const type = input.getAttribute('type') || 'text';
       if (type === 'text' || type === 'search') {
@@ -34,13 +32,17 @@ document.body.style.backgroundColor = "lightblue";
         url: `${baseUrl}?${queryName}=`
       };
 
-      // Send to background or popup to ask user to save
-      chrome.runtime.sendMessage({
-        action: 'suggestSearchEngine',
-        engine: engineInfo
+      chrome.storage.local.get({ engines: [] }, (result) => {
+        const exists = result.engines.some(e => e.url === engineInfo.url);
+        if (!exists) {
+          chrome.runtime.sendMessage({
+            action: 'suggestSearchEngine',
+            engine: engineInfo
+          });
+        }
       });
 
-      break; // Only detect the first valid search form
+      break;
     }
   }
 })();
