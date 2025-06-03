@@ -1,6 +1,6 @@
 {
   "name": "Find8",
-  "version": "1.5.1",
+  "version": "1.7.2",
   "description": "Search across multiple search engines from a single interface.",
   "manifest_version": 3,
   "action": {
@@ -12,6 +12,11 @@
   "background": {
     "service_worker": "background.js"
   },
+  "content_scripts": [ {
+    "matches": ["<all_urls>"],
+    "js": ["content.js"],
+    "run_at": "document_end"
+  } ],
   "icons": {
     "128": "icon128.png"
   }
