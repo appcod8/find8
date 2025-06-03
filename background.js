@@ -66,15 +66,25 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 });
 
 
-
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === "suggestSearchEngine") {
     const newEngine = request.engine;
+    console.log("Detected engine:", newEngine);
 
+    // Show a badge (✓) for feedback
+    chrome.action.setBadgeText({ text: "✓" });
+    chrome.action.setBadgeBackgroundColor({ color: "#4caf50" });
+
+    // Auto-clear badge after 5 seconds
+    setTimeout(() => {
+      chrome.action.setBadgeText({ text: "" });
+    }, 5000);
+
+    // Save to local storage
     chrome.storage.local.get({ engines: [] }, (data) => {
       const engines = data.engines;
 
-      // Check for duplicates
+      // Avoid duplicates
       const exists = engines.some(e => e.url === newEngine.url);
       if (!exists) {
         engines.push(newEngine);
