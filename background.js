@@ -51,8 +51,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === 'suggestSearchEngine') {
     console.log("Detected engine:", request.engine);
 
-// Optional: store in storage or session for now
-
+  // Optional: store in storage or session for now
   chrome.storage.local.set({ lastSuggestedEngine: request.engine });
 
     // Show a badge with a dot or letter
@@ -63,6 +62,32 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     setTimeout(() => {
       chrome.action.setBadgeText({ text: "" });
     }, 5000);
+  }
+});
+
+
+
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  if (request.action === "suggestSearchEngine") {
+    const newEngine = request.engine;
+
+    chrome.storage.local.get({ engines: [] }, (data) => {
+      const engines = data.engines;
+
+      // Check for duplicates
+      const exists = engines.some(e => e.url === newEngine.url);
+      if (!exists) {
+        engines.push(newEngine);
+        chrome.storage.local.set({ engines }, () => {
+          console.log("Engine added:", newEngine);
+          chrome.runtime.sendMessage({ action: "engineAdded", engine: newEngine });
+        });
+      } else {
+        console.log("Engine already exists:", newEngine);
+      }
+    });
+
+    sendResponse({ success: true });
   }
 });
 
