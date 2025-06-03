@@ -48,7 +48,6 @@ function handleSearchRequest(query, url, sendResponse) {
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === "suggestSearchEngine") {
     console.log("Suggested engine:", request.engine);
-
 // Optional: show notification or popup to confirm adding new search engine
     chrome.storage.sync.get({ engines: [] }, (data) => {
       const engines = data.engines || [];
