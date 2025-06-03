@@ -50,6 +50,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 // Add auto found search engine list
+// Add auto found search engine list
 chrome.storage.local.get('lastSuggestedEngine', (data) => {
   if (data.lastSuggestedEngine) {
     const engine = data.lastSuggestedEngine;
@@ -59,23 +60,24 @@ chrome.storage.local.get('lastSuggestedEngine', (data) => {
       <button id="saveEngineBtn">Add to Find8</button>
     `;
 
-document.getElementById('saveEngineBtn').addEventListener('click', () => {
-      // Add to permanent engine list
-      // (You can use chrome.storage.sync or local to store your array)
-      chrome.storage.local.get('customEngines', (result) => {
-        const engines = result.customEngines || [];
-        engines.push(engine);
-        chrome.storage.local.set({ customEngines: engines }, () => {
-          alert(`Added ${engine.name} to Find8`);
-        });
+    document.getElementById('saveEngineBtn').addEventListener('click', () => {
+      // Use the same key as background.js
+      chrome.storage.local.get({ engines: [] }, (result) => {
+        const engines = result.engines;
+        
+        // Avoid duplicates
+        const exists = engines.some(e => e.url === engine.url);
+        if (!exists) {
+          engines.push(engine);
+          chrome.storage.local.set({ engines }, () => {
+            alert(`Added ${engine.name} to Find8`);
+            // Clear last suggestion so it doesn’t reappear
+            chrome.storage.local.remove('lastSuggestedEngine');
+          });
+        } else {
+          alert(`${engine.name} is already added.`);
+        }
       });
     });
-  }
-});
-
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  if (request.action === "engineAdded") {
-    console.log("Engine added to storage:", request.engine);
-    loadEngines(); // Call your function to refresh the dropdown
   }
 });
