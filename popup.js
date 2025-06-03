@@ -71,6 +71,8 @@ chrome.storage.local.get('lastSuggestedEngine', (data) => {
           engines.push(engine);
           chrome.storage.local.set({ engines }, () => {
             alert(`Added ${engine.name} to Find8`);
+            loadEngines();
+            
             // Clear last suggestion so it doesn’t reappear
             chrome.storage.local.remove('lastSuggestedEngine');
           });
@@ -81,3 +83,24 @@ chrome.storage.local.get('lastSuggestedEngine', (data) => {
     });
   }
 });
+
+function loadEngines() {
+  chrome.storage.local.get({ engines: [] }, (result) => {
+    const dropdown = document.getElementById('searchEngine');
+    if (!dropdown) return;
+
+    dropdown.innerHTML = ''; // Clear existing options
+
+    result.engines.forEach(engine => {
+      const option = document.createElement('option');
+      option.value = engine.url;
+      option.textContent = engine.name;
+      dropdown.appendChild(option);
+    });
+  });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  loadEngines();
+});
+
