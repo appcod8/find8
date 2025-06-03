@@ -44,26 +44,27 @@ function handleSearchRequest(query, url, sendResponse) {
   sendResponse({ message: "Search result opened in a new tab." });
 }
 
+
 // Suggest/Auto add found new search engine 
+// Show engines
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === 'suggestSearchEngine') {
     console.log("Detected engine:", request.engine);
-    // You could trigger a notification, badge, or store it
+
+// Optional: store in storage or session for now
+
+  chrome.storage.local.set({ lastSuggestedEngine: request.engine });
+
+    // Show a badge with a dot or letter
+    chrome.action.setBadgeText({ text: "✓" });
+    chrome.action.setBadgeBackgroundColor({ color: "#4caf50" });
+
+    // Optional: remove badge after 5 seconds
+    setTimeout(() => {
+      chrome.action.setBadgeText({ text: "" });
+    }, 5000);
   }
 });
 
-// Save engines
-function saveEngines(engineList) {
-  chrome.storage.sync.set({ engines: engineList }, () => {
-    console.log('Engines saved:', engineList);
-  });
-}
-// Load engines
-function loadEngines(callback) {
-  chrome.storage.sync.get({ engines: [] }, (result) => {
-    callback(result.engines || []);
-  });
-}
-
-// To log message to the console
-// console.log('script running');
+// Test script runs log message to console
+console.log('f8 bg script running');
