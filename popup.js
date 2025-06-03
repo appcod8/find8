@@ -1,82 +1,70 @@
 // popup.js
-document.addEventListener('DOMContentLoaded', function () {
-  const searchBtn = document.getElementById('searchBtn');
-  const searchEngine = document.getElementById('searchEngine');
-  const searchQuery = document.getElementById('searchQuery');
 
-  updateExtensionName();
+document.addEventListener('DOMContentLoaded', () => {
   loadEngines();
-  handleSuggestions();
 
-  searchBtn.addEventListener('click', function () {
-    const selectedEngine = searchEngine.value;
-    const query = searchQuery.value.trim();
-
-    if (!query) {
-      alert('Please enter a search query.');
-      return;
+  chrome.storage.local.get('selectedEngine', (data) => {
+    const dropdown = document.getElementById('searchEngine');
+    if (data.selectedEngine && dropdown) {
+      dropdown.value = data.selectedEngine;
+      updateExtensionName(data.selectedEngine);
     }
-
-    const defaultEngines = {
-      "google": "https://www.google.com/search?q=",
-      "brave": "https://search.brave.com/search?q=",
-      "bing": "https://www.bing.com/search?q=",
-      "duckduckgo": "https://duckduckgo.com/?q=",
-      "github": "https://github.com/search?q=",
-      "stackexchange": "https://stackexchange.com/search?q=",
-      "stackoverflow": "https://stackoverflow.com/search?q=",
-      "startpage": "https://www.startpage.com/do/search?query=",
-       "youtube": "https://www.youtube.com/results?search_query=",
-      "wikipedia": "https://en.wikipedia.org/w/index.php?title=Special:Search&search="
-    };
-
-    let searchUrl = selectedEngine.startsWith('http')
-      ? selectedEngine
-      : defaultEngines[selectedEngine];
-
-    if (!searchUrl) {
-      alert('Invalid search engine selected.');
-      return;
-    }
-
-    const url = searchUrl + encodeURIComponent(query);
-    window.open(url, '_blank');
   });
 
-  searchEngine.addEventListener('change', updateExtensionName);
+  document.getElementById('searchEngine').addEventListener('change', (e) => {
+    const selected = e.target.value;
+    chrome.storage.local.set({ selectedEngine: selected });
+    updateExtensionName(selected);
+  });
 
-  function updateExtensionName() {
-    const selectedEngine = searchEngine.value;
-    let extensionName = 'Find8';
-    if (selectedEngine && !selectedEngine.startsWith('http')) {
-      extensionName += ` (${selectedEngine.charAt(0).toUpperCase() + selectedEngine.slice(1)})`;
+  document.getElementById('searchBtn').addEventListener('click', () => {
+    const engineURL = document.getElementById('searchEngine').value;
+    const query = document.getElementById('searchQuery').value.trim();
+    if (!query) {
+      alert("Please enter a search query.");
+      return;
     }
-    document.getElementById('extensionName').textContent = extensionName;
-    document.getElementById('extensionNameHeader').textContent = extensionName;
-  }
+    window.open(engineURL + encodeURIComponent(query), '_blank');
+  });
 });
 
+function updateExtensionName(selected) {
+  let extensionName = 'Find8';
+  if (selected) {
+    try {
+      const parsed = new URL(selected);
+      extensionName += ` (${parsed.hostname})`;
+    } catch {
+      extensionName += ` (${selected.charAt(0).toUpperCase() + selected.slice(1)})`;
+    }
+  }
+  document.getElementById('extensionName').textContent = extensionName;
+  document.getElementById('extensionNameHeader').textContent = extensionName;
+}
+
 function loadEngines() {
+  const dropdown = document.getElementById('searchEngine');
+  dropdown.innerHTML = '';
+
   chrome.storage.local.get({ engines: [] }, (result) => {
-    const dropdown = document.getElementById('searchEngine');
-    if (!dropdown) return;
-
-    dropdown.innerHTML = ''; // Clear existing
-
     const defaultEngines = [
-      { name: "Google", url: "google" },
-      { name: "DuckDuckGo", url: "duckduckgo" },
-      { name: "Bing", url: "bing" },
-      { name: "Brave", url: "brave" },
-      { name: "StartPage", url: "startpage" },
-      { name: "Wikipedia", url: "wikipedia" },
-      { name: "Youtube", url: "youtube" },
-      { name: "GitHub", url: "github" },
-      { name: "StackOverflow", url: "stackoverflow" },
-      { name: "StackExchange", url: "stackexchange" }
+      { name: 'Google', url: 'https://www.google.com/search?q=' },
+      { name: 'Brave', url: 'https://search.brave.com/search?q=' },
+      { name: 'Bing', url: 'https://www.bing.com/search?q=' },
+      { name: 'DuckDuckGo', url: 'https://duckduckgo.com/?q=' },
+      { name: 'Youtube', url: 'https://www.youtube.com/results?search_query=' },
+      { name: 'Wikipedia', url: 'https://en.wikipedia.org/wiki/Special:Search?search=' }
     ];
 
-    [...defaultEngines, ...result.engines].forEach(engine => {
+    const allEngines = [...defaultEngines];
+
+    result.engines.forEach(custom => {
+      if (!allEngines.some(e => e.url === custom.url)) {
+        allEngines.push(custom);
+      }
+    });
+
+    allEngines.forEach(engine => {
       const option = document.createElement('option');
       option.value = engine.url;
       option.textContent = engine.name;
@@ -85,36 +73,32 @@ function loadEngines() {
   });
 }
 
-function handleSuggestions() {
-  chrome.storage.local.get('lastSuggestedEngine', (data) => {
-    if (data.lastSuggestedEngine) {
-      const engine = data.lastSuggestedEngine;
-      const container = document.getElementById('suggestions');
-      if (!container) return;
+// Detected engine from content script
+chrome.storage.local.get('lastSuggestedEngine', (data) => {
+  if (data.lastSuggestedEngine) {
+    const engine = data.lastSuggestedEngine;
+    const container = document.getElementById('suggestions');
+    container.innerHTML = `
+      <p>Detected engine: <strong>${engine.name}</strong></p>
+      <button id="saveEngineBtn">Add to Find8</button>
+    `;
 
-      container.innerHTML = `
-        <p>Detected engine: <strong>${engine.name}</strong></p>
-        <button id="saveEngineBtn">Add to Find8</button>
-      `;
+    document.getElementById('saveEngineBtn').addEventListener('click', () => {
+      chrome.storage.local.get({ engines: [] }, (result) => {
+        const engines = result.engines;
+        const exists = engines.some(e => e.url === engine.url);
 
-      document.getElementById('saveEngineBtn').addEventListener('click', () => {
-        chrome.storage.local.get({ engines: [] }, (result) => {
-          const engines = result.engines;
-          const exists = engines.some(e => e.url === engine.url);
-
-          if (!exists) {
-            engines.push(engine);
-            chrome.storage.local.set({ engines }, () => {
-              alert(`Added ${engine.name} to Find8`);
-              chrome.storage.local.remove('lastSuggestedEngine');
-              loadEngines(); // Refresh dropdown
-              container.innerHTML = ''; // Clear UI after adding
-            });
-          } else {
-            alert(`${engine.name} is already added.`);
-          }
-        });
+        if (!exists) {
+          engines.push(engine);
+          chrome.storage.local.set({ engines }, () => {
+            alert(`Added ${engine.name} to Find8`);
+            loadEngines();
+            chrome.storage.local.remove('lastSuggestedEngine');
+          });
+        } else {
+          alert(`${engine.name} is already added.`);
+        }
       });
-    }
-  });
-}
+    });
+  }
+});
