@@ -1,6 +1,6 @@
 // background.js
 
-// Omnibox command handler (top-level)
+// Omnibox command handler
 chrome.omnibox.onInputEntered.addListener((text) => {
   const [prefix, ...queryParts] = text.trim().split(' ');
   const query = queryParts.join(' ');
@@ -27,15 +27,36 @@ chrome.omnibox.onInputEntered.addListener((text) => {
       break;
     default:
       url = `https://www.google.com/search?q=${encodeURIComponent(text)}`;
-  }   
+  }
 
-  chrome.tabs.create({ url });  
+  chrome.tabs.create({ url });
 });
 
-// Message listener for popup-initiated searches
-chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+// Handle omnibox or popup search
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === "search") {
     handleSearchRequest(request.query, request.url, sendResponse);
+  }
+
+  // Handle suggested engine from content script
+  else if (request.action === 'suggestSearchEngine') {
+    const newEngine = request.engine;
+    console.log("Suggested engine:", newEngine);
+
+    // Save it temporarily
+    chrome.storage.local.set({ lastSuggestedEngine: newEngine }, () => {
+      console.log("Stored for confirmation");
+    });
+
+    // Notify with badge
+    chrome.action.setBadgeText({ text: "✓" });
+    chrome.action.setBadgeBackgroundColor({ color: "#4caf50" });
+
+    setTimeout(() => {
+      chrome.action.setBadgeText({ text: "" });
+    }, 5000);
+
+    sendResponse({ success: true });
   }
 });
 
@@ -44,62 +65,5 @@ function handleSearchRequest(query, url, sendResponse) {
   sendResponse({ message: "Search result opened in a new tab." });
 }
 
-
-// Suggest/Auto add found new search engine 
-// Show engines
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  if (request.action === 'suggestSearchEngine') {
-    console.log("Detected engine:", request.engine);
-
-  // Optional: store in storage or session for now
-  chrome.storage.local.set({ lastSuggestedEngine: request.engine });
-
-    // Show a badge with a dot or letter
-    chrome.action.setBadgeText({ text: "✓" });
-    chrome.action.setBadgeBackgroundColor({ color: "#4caf50" });
-
-    // Optional: remove badge after 5 seconds
-    setTimeout(() => {
-      chrome.action.setBadgeText({ text: "" });
-    }, 5000);
-  }
-});
-
-
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  if (request.action === "suggestSearchEngine") {
-    const newEngine = request.engine;
-    console.log("Detected engine:", newEngine);
-
-    // Show a badge (✓) for feedback
-    chrome.action.setBadgeText({ text: "✓" });
-    chrome.action.setBadgeBackgroundColor({ color: "#4caf50" });
-
-    // Auto-clear badge after 5 seconds
-    setTimeout(() => {
-      chrome.action.setBadgeText({ text: "" });
-    }, 5000);
-
-    // Save to local storage
-    chrome.storage.local.get({ engines: [] }, (data) => {
-      const engines = data.engines;
-
-      // Avoid duplicates
-      const exists = engines.some(e => e.url === newEngine.url);
-      if (!exists) {
-        engines.push(newEngine);
-        chrome.storage.local.set({ engines }, () => {
-          console.log("Engine added:", newEngine);
-          chrome.runtime.sendMessage({ action: "engineAdded", engine: newEngine });
-        });
-      } else {
-        console.log("Engine already exists:", newEngine);
-      }
-    });
-
-    sendResponse({ success: true });
-  }
-});
-
-// Test script runs log message to console
-console.log('f8 bg script running');
+// Log to confirm script loaded
+console.log('Find8 background script running');
