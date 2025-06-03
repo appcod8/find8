@@ -26,6 +26,7 @@ document.addEventListener('DOMContentLoaded', function () {
       "stackexchange": "https://stackexchange.com/search?q=",
       "stackoverflow": "https://stackoverflow.com/search?q=",
       "startpage": "https://www.startpage.com/do/search?query=",
+       "youtube": "https://www.youtube.com/results?search_query=",
       "wikipedia": "https://en.wikipedia.org/w/index.php?title=Special:Search&search="
     };
 
@@ -69,6 +70,7 @@ function loadEngines() {
       { name: "Brave", url: "brave" },
       { name: "StartPage", url: "startpage" },
       { name: "Wikipedia", url: "wikipedia" },
+      { name: "Youtube", url: "youtube" },
       { name: "GitHub", url: "github" },
       { name: "StackOverflow", url: "stackoverflow" },
       { name: "StackExchange", url: "stackexchange" }
