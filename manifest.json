@@ -1,7 +1,7 @@
 {
   "name": "Find8",
-  "version": "1.7.2",
-  "description": "Find8 Search across multiple search engines from a single interface. The ‘storage’ permission is used to save sync their preferences saved locally only. No data is collected or shared externally.",
+  "version": "2.7.1",
+  "description": "Search across and auto add multiple search engines from a single interface.",
   "manifest_version": 3,
   "action": {
     "default_popup": "popup.html"
@@ -12,13 +12,6 @@
   "background": {
     "service_worker": "background.js"
   },
-  "content_scripts": [ 
-    {
-     "matches": ["<all_urls>"],
-     "js": ["content.js"],
-     "run_at": "document_end"
-    } 
-  ],  
   "permissions": [
     "storage"
   ],
