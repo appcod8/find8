@@ -46,19 +46,9 @@ function handleSearchRequest(query, url, sendResponse) {
 
 // Suggest/Auto add found new search engine 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  if (request.action === "suggestSearchEngine") {
-    console.log("Suggested engine:", request.engine);
-// Optional: show notification or popup to confirm adding new search engine
-    chrome.storage.sync.get({ engines: [] }, (data) => {
-      const engines = data.engines || [];
-      const exists = engines.find(e => e.url === request.engine.url);
-
-      if (!exists) {
-        engines.push(request.engine);
-        chrome.storage.sync.set({ engines });
-        console.log("Engine added:", request.engine.name);
-      }
-    });
+  if (request.action === 'suggestSearchEngine') {
+    console.log("Detected engine:", request.engine);
+    // You could trigger a notification, badge, or store it
   }
 });
 
