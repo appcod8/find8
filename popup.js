@@ -48,3 +48,30 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('extensionNameHeader').textContent = extensionName;
   }
 });
+
+
+// Add auto found search engine list
+chrome.storage.local.get('lastSuggestedEngine', (data) => {
+  if (data.lastSuggestedEngine) {
+    const engine = data.lastSuggestedEngine;
+    const container = document.getElementById('suggestions');
+    container.innerHTML = `
+      <p>Detected engine: <strong>${engine.name}</strong></p>
+      <button id="saveEngineBtn">Add to Find8</button>
+    `;
+
+document.getElementById('saveEngineBtn').addEventListener('click', () => {
+      // Add to permanent engine list
+      // (You can use chrome.storage.sync or local to store your array)
+      chrome.storage.local.get('customEngines', (result) => {
+        const engines = result.customEngines || [];
+        engines.push(engine);
+        chrome.storage.local.set({ customEngines: engines }, () => {
+          alert(`Added ${engine.name} to Find8`);
+        });
+      });
+    });
+  }
+});
+
+
