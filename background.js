@@ -62,5 +62,18 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   }
 });
 
+// Save engines
+function saveEngines(engineList) {
+  chrome.storage.sync.set({ engines: engineList }, () => {
+    console.log('Engines saved:', engineList);
+  });
+}
+// Load engines
+function loadEngines(callback) {
+  chrome.storage.sync.get({ engines: [] }, (result) => {
+    callback(result.engines || []);
+  });
+}
+
 // To log message to the console
 // console.log('script running');
