@@ -24,27 +24,40 @@ chrome.omnibox.onInputEntered.addListener((text) => {
   chrome.tabs.create({ url });
 });
 
+// confirm add auto found search engines
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === 'suggestSearchEngine') {
+    const engine = request.engine;
+
+    // Just store the suggestion temporarily
+    chrome.storage.local.set({ lastSuggestedEngine: engine });
+
+    // Optional visual feedback
+    chrome.action.setBadgeText({ text: "✓" });
+    chrome.action.setBadgeBackgroundColor({ color: "#4caf50" });
+
+    setTimeout(() => {
+      chrome.action.setBadgeText({ text: "" });
+    }, 5000);
+  }
+
+  if (request.action === 'addEngine') {
     const newEngine = request.engine;
 
     chrome.storage.local.get({ engines: [] }, (data) => {
-      const exists = data.engines.some(e => e.url === newEngine.url);
+      const engines = data.engines;
+      const exists = engines.some(e => e.url === newEngine.url);
+
       if (!exists) {
-        const updated = [...data.engines, newEngine];
-        chrome.storage.local.set({ engines: updated }, () => {
+        engines.push(newEngine);
+        chrome.storage.local.set({ engines }, () => {
           console.log("Engine added:", newEngine);
-          chrome.runtime.sendMessage({ action: 'engineAdded', engine: newEngine });
+          chrome.runtime.sendMessage({ action: "engineAdded", engine: newEngine });
         });
       } else {
         console.log("Engine already exists:", newEngine);
       }
     });
-
-    // Badge feedback
-    chrome.action.setBadgeText({ text: "✓" });
-    chrome.action.setBadgeBackgroundColor({ color: "#4caf50" });
-    setTimeout(() => chrome.action.setBadgeText({ text: "" }), 5000);
 
     sendResponse({ success: true });
   }
