@@ -1,7 +1,6 @@
 // content.js
 
 // console.log('Content script loaded');
-
 // Exmpl: Change background  
 document.body.style.backgroundColor = "lightblue";
 
