@@ -22,7 +22,7 @@ No analytics, no tracking, no third-party scripts—everything runs locally in y
 
 ## Screenshot
 
-![Find8 Popup UI](./fin8_sc1.jpg)
+![Find8 Popup UI](./fin8_sc0.jpg)
 
 ---
 
