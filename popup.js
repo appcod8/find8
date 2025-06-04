@@ -50,6 +50,7 @@ function loadEngines() {
     { name: "DuckDuckGo", url: "https://duckduckgo.com/?q=" },
     { name: "GitHub", url: "https://github.com/search?q=" },
     { name: "StackOverflow", url: "https://stackoverflow.com/search?q=" },
+    { name: "stackexchange", url: "https://stackexchange.com/search?q=" },
     { name: "Startpage", url: "https://www.startpage.com/do/search?query=" },
     { name: "Wikipedia", url: "https://en.wikipedia.org/w/index.php?title=Special:Search&search=" },
     { name: "YouTube", url: "https://www.youtube.com/results?search_query=" },
