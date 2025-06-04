@@ -2,7 +2,7 @@
 
 // console.log('Content script loaded');
 
-// Exmpl: Changing background color 
+// Exmpl: Change background  
 document.body.style.backgroundColor = "lightblue";
 
 (function () {
@@ -30,13 +30,9 @@ document.body.style.backgroundColor = "lightblue";
         url: `${baseUrl}?${queryName}=`
       };
 
-      chrome.storage.local.get({ engines: [] }, (data) => {
-        const exists = data.engines.some(e => e.url === engineInfo.url);
-        if (!exists) {
-          chrome.storage.local.set({ lastSuggestedEngine: engineInfo }, () => {
-            chrome.runtime.sendMessage({ action: 'suggestSearchEngine', engine: engineInfo });
-          });
-        }
+      chrome.runtime.sendMessage({
+        action: 'suggestSearchEngine',
+        engine: engineInfo
       });
 
       break;
