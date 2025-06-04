@@ -28,8 +28,13 @@ No analytics, no tracking, no third-party scripts—everything runs locally in y
 
 ## Usage
 
-Type `f` in your address bar, then enter a keyword:
+1. Click the Find8 icon in your browser toolbar
+2. Enter your search query
+3. Choose a search engine
+4. Hit "Search" — results open in a new tab
 
+Or just type `8` in your address bar for instant omnibox access.
+And then enter a keyword:
 - `y cats` → YouTube search
 - `g openai` → GitHub search
 - `b privacy` → Brave search
@@ -56,17 +61,6 @@ Install directly:
 2. Go to your browser’s `extensions` page
 3. Enable **Developer Mode**
 4. Click **Load unpacked**, and select the folder
-
----
-
-## Usage
-
-1. Click the Find8 icon in your browser toolbar
-2. Enter your search query
-3. Choose a search engine
-4. Hit "Search" — results open in a new tab
-
-Or just type `m` in your address bar for instant omnibox access.
 
 ---
 
