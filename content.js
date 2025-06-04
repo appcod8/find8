@@ -5,8 +5,6 @@
 // Exmpl: Changing background color 
 document.body.style.backgroundColor = "lightblue";
 
-// Add event listeners, other logic.
-
 (function () {
   const forms = document.querySelectorAll('form[method="get"], form:not([method])');
 
@@ -32,12 +30,11 @@ document.body.style.backgroundColor = "lightblue";
         url: `${baseUrl}?${queryName}=`
       };
 
-      chrome.storage.local.get({ engines: [] }, (result) => {
-        const exists = result.engines.some(e => e.url === engineInfo.url);
+      chrome.storage.local.get({ engines: [] }, (data) => {
+        const exists = data.engines.some(e => e.url === engineInfo.url);
         if (!exists) {
-          chrome.runtime.sendMessage({
-            action: 'suggestSearchEngine',
-            engine: engineInfo
+          chrome.storage.local.set({ lastSuggestedEngine: engineInfo }, () => {
+            chrome.runtime.sendMessage({ action: 'suggestSearchEngine', engine: engineInfo });
           });
         }
       });
