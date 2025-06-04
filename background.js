@@ -1,4 +1,5 @@
 // background.js
+// Handle Omnibox input
 chrome.omnibox.onInputEntered.addListener((text) => {
   const [prefix, ...queryParts] = text.trim().split(' ');
   const query = queryParts.join(' ');
@@ -24,41 +25,54 @@ chrome.omnibox.onInputEntered.addListener((text) => {
   chrome.tabs.create({ url });
 });
 
-// confirm add auto found search engines
+// Normalize URLs for flexible duplicate checking
+function normalizeUrl(rawUrl) {
+  try {
+    const urlObj = new URL(rawUrl);
+    urlObj.search = ''; // Remove query params
+    return urlObj.href;
+  } catch {
+    return rawUrl;
+  }
+}
+
+// Listen for search engine detection and addition
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === 'suggestSearchEngine') {
     const engine = request.engine;
-
-    // Just store the suggestion temporarily
     chrome.storage.local.set({ lastSuggestedEngine: engine });
 
-    // Optional visual feedback
     chrome.action.setBadgeText({ text: "✓" });
     chrome.action.setBadgeBackgroundColor({ color: "#4caf50" });
 
     setTimeout(() => {
       chrome.action.setBadgeText({ text: "" });
     }, 5000);
+
+    sendResponse({ success: true });
   }
 
   if (request.action === 'addEngine') {
     const newEngine = request.engine;
+    const normalizedNewUrl = normalizeUrl(newEngine.url);
 
     chrome.storage.local.get({ engines: [] }, (data) => {
       const engines = data.engines;
-      const exists = engines.some(e => e.url === newEngine.url);
 
+      const exists = engines.some(e => normalizeUrl(e.url) === normalizedNewUrl);
       if (!exists) {
         engines.push(newEngine);
         chrome.storage.local.set({ engines }, () => {
           console.log("Engine added:", newEngine);
           chrome.runtime.sendMessage({ action: "engineAdded", engine: newEngine });
+          sendResponse({ success: true });
         });
       } else {
         console.log("Engine already exists:", newEngine);
+        sendResponse({ success: false, reason: 'duplicate' });
       }
     });
 
-    sendResponse({ success: true });
+    return true; // Indicate async response
   }
 });
