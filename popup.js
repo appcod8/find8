@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   loadEngines();
 
-  // Load selected engine from storage
+  // Load previously selected engine
   chrome.storage.local.get('selectedEngine', (data) => {
     if (data.selectedEngine) {
       searchEngine.value = data.selectedEngine;
@@ -22,8 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    chrome.storage.local.set({ selectedEngine }); // Persist selected engine
-
+    chrome.storage.local.set({ selectedEngine }); // Remember choice
     window.open(selectedEngine + encodeURIComponent(query), '_blank');
   });
 
@@ -41,7 +40,15 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
-// Load engines into dropdown
+function normalizeUrl(url) {
+  try {
+    return new URL(url).origin + new URL(url).pathname;
+  } catch (e) {
+    return url;
+  }
+}
+
+// Load all available engines into dropdown
 function loadEngines() {
   const defaultEngines = [
     { name: "Google", url: "https://www.google.com/search?q=" },
@@ -50,24 +57,29 @@ function loadEngines() {
     { name: "DuckDuckGo", url: "https://duckduckgo.com/?q=" },
     { name: "GitHub", url: "https://github.com/search?q=" },
     { name: "StackOverflow", url: "https://stackoverflow.com/search?q=" },
-    { name: "stackexchange", url: "https://stackexchange.com/search?q=" },
+    { name: "Stackexchange", url: "https://stackexchange.com/search?q=" },
     { name: "Startpage", url: "https://www.startpage.com/do/search?query=" },
     { name: "Wikipedia", url: "https://en.wikipedia.org/w/index.php?title=Special:Search&search=" },
     { name: "YouTube", url: "https://www.youtube.com/results?search_query=" },
   ];
 
   chrome.storage.local.get({ engines: [] }, (data) => {
-    const engines = [...defaultEngines, ...data.engines];
+    const combined = [...defaultEngines, ...data.engines];
+    const unique = [];
     const seen = new Set();
-    const uniqueEngines = engines.filter(e => {
-      if (seen.has(e.url)) return false;
-      seen.add(e.url);
-      return true;
-    });
+
+    for (const engine of combined) {
+      const norm = normalizeUrl(engine.url);
+      if (!seen.has(norm)) {
+        seen.add(norm);
+        unique.push(engine);
+      }
+    }
 
     const dropdown = document.getElementById('searchEngine');
     dropdown.innerHTML = '';
-    uniqueEngines.forEach(engine => {
+
+    unique.forEach(engine => {
       const option = document.createElement('option');
       option.value = engine.url;
       option.textContent = engine.name;
@@ -76,7 +88,7 @@ function loadEngines() {
   });
 }
 
-// Display suggestion and allow manual save
+// Show last detected engine and handle save
 chrome.storage.local.get('lastSuggestedEngine', (data) => {
   const container = document.getElementById('suggestions');
   if (data.lastSuggestedEngine) {
@@ -88,21 +100,24 @@ chrome.storage.local.get('lastSuggestedEngine', (data) => {
 
     document.getElementById('saveEngineBtn').addEventListener('click', () => {
       chrome.storage.local.get({ engines: [] }, (result) => {
-        const engines = result.engines;
-        const exists = engines.some(e => e.url === engine.url);
-        if (!exists) {
-          engines.push(engine);
-          chrome.storage.local.set({ engines }, () => {
-            alert(`Added ${engine.name} to Find8`);
-            chrome.storage.local.remove('lastSuggestedEngine');
-            loadEngines();
-          });
-        } else {
+        const existingEngines = result.engines || [];
+        const normNew = normalizeUrl(engine.url);
+
+        const isDuplicate = existingEngines.some(e => normalizeUrl(e.url) === normNew);
+        if (isDuplicate) {
           alert(`${engine.name} is already added.`);
+          return;
         }
+
+        existingEngines.push(engine);
+        chrome.storage.local.set({ engines: existingEngines }, () => {
+          alert(`Added ${engine.name} to Find8`);
+          chrome.storage.local.remove('lastSuggestedEngine');
+          loadEngines();
+        });
       });
     });
   } else {
-    container.innerHTML = ''; // Clear if no suggestion
+    container.innerHTML = '';
   }
 });
