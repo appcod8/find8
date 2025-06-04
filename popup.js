@@ -1,60 +1,34 @@
 // popup.js
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   const searchBtn = document.getElementById('searchBtn');
   const searchEngine = document.getElementById('searchEngine');
   const searchQuery = document.getElementById('searchQuery');
-  const extensionName = document.getElementById('extensionName');
-  const extensionNameHeader = document.getElementById('extensionNameHeader');
 
-  function updateExtensionName(url) {
-    let name = 'Find8';
-    if (url) {
-      try {
-        const domain = new URL(url).hostname;
-        name += ` (${domain})`;
-      } catch (e) {}
-    }
-    extensionName.textContent = name;
-    extensionNameHeader.textContent = name;
-  }
-
-  function loadEngines() {
-    chrome.storage.local.get({ engines: [], selectedEngine: '' }, (data) => {
-      searchEngine.innerHTML = '';
-      data.engines.forEach(engine => {
-        const option = document.createElement('option');
-        option.value = engine.url;
-        option.textContent = engine.name;
-        searchEngine.appendChild(option);
-      });
-
-      if (data.selectedEngine) {
-        searchEngine.value = data.selectedEngine;
-        updateExtensionName(data.selectedEngine);
-      }
-    });
-  }
+  loadEngines();
+  restoreSelectedEngine();
+  updateExtensionName();
 
   searchBtn.addEventListener('click', () => {
-    const selectedURL = searchEngine.value;
+    const selectedUrl = searchEngine.value;
     const query = searchQuery.value.trim();
     if (!query) {
       alert('Please enter a search query.');
       return;
     }
 
-    chrome.storage.local.set({ selectedEngine: selectedURL });
-    const fullURL = selectedURL + encodeURIComponent(query);
-    window.open(fullURL, '_blank');
+    chrome.storage.local.set({ selectedEngineUrl: selectedUrl });
+
+    const url = selectedUrl + encodeURIComponent(query);
+    window.open(url, '_blank');
   });
 
   searchEngine.addEventListener('change', () => {
-    const selectedURL = searchEngine.value;
-    chrome.storage.local.set({ selectedEngine: selectedURL });
-    updateExtensionName(selectedURL);
+    const selected = searchEngine.value;
+    chrome.storage.local.set({ selectedEngineUrl: selected });
+    updateExtensionName();
   });
 
-  // Load detected engine suggestion
+  // Handle last detected engine
   chrome.storage.local.get('lastSuggestedEngine', (data) => {
     if (data.lastSuggestedEngine) {
       const engine = data.lastSuggestedEngine;
@@ -66,18 +40,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
       document.getElementById('saveEngineBtn').addEventListener('click', () => {
         chrome.storage.local.get({ engines: [] }, (result) => {
-          const exists = result.engines.some(e =>
-            new URL(e.url).hostname === new URL(engine.url).hostname &&
-            e.url.includes(getQueryKey(engine.url))
-          );
+          const engines = result.engines;
+
+          const normalizedNew = wildcardKey(engine.url);
+          const exists = engines.some(e => wildcardKey(e.url) === normalizedNew);
 
           if (!exists) {
-            result.engines.push(engine);
-            chrome.storage.local.set({ engines: result.engines }, () => {
+            engines.push(engine);
+            chrome.storage.local.set({ engines }, () => {
               alert(`Added ${engine.name} to Find8`);
-              loadEngines();
               chrome.storage.local.remove('lastSuggestedEngine');
-              container.innerHTML = '';
+              loadEngines();
             });
           } else {
             alert(`${engine.name} is already added.`);
@@ -87,20 +60,79 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  function getQueryKey(url) {
+  function wildcardKey(url) {
     try {
-      const queryPart = url.split('?')[1];
-      if (queryPart) {
-        const pairs = queryPart.split('&');
-        for (const pair of pairs) {
-          if (pair.endsWith('=')) {
-            return pair.replace('=', '');
-          }
-        }
+      const u = new URL(url);
+      const hostname = u.hostname.replace(/^www\./, '');
+      const params = new URLSearchParams(u.search);
+      let queryKey = '';
+      for (const [key] of params.entries()) {
+        queryKey = key;
+        break;
       }
-    } catch {}
-    return '';
+      return `${hostname}|${queryKey}`;
+    } catch (e) {
+      return url;
+    }
   }
 
-  loadEngines();
+  function loadEngines() {
+    chrome.storage.local.get({ engines: [] }, (data) => {
+      const dropdown = document.getElementById('searchEngine');
+      if (!dropdown) return;
+
+      dropdown.innerHTML = '';
+
+      // Built-in defaults
+      const defaults = [
+        { name: "Google", url: "https://www.google.com/search?q=" },
+        { name: "YouTube", url: "https://www.youtube.com/results?search_query=" },
+        { name: "Brave", url: "https://search.brave.com/search?q=" },
+        { name: "Bing", url: "https://www.bing.com/search?q=" },
+        { name: "DuckDuckGo", url: "https://duckduckgo.com/?q=" },
+        { name: "GitHub", url: "https://github.com/search?q=" },
+        { name: "StackExchange", url: "https://stackexchange.com/search?q=" },
+        { name: "StackOverflow", url: "https://stackoverflow.com/search?q=" },
+        { name: "Wikipedia", url: "https://en.wikipedia.org/w/index.php?title=Special:Search&search=" },
+        { name: "Startpage", url: "https://www.startpage.com/do/search?query=" }
+      ];
+
+      const fullList = [...defaults];
+      const existingKeys = new Set(defaults.map(e => wildcardKey(e.url)));
+
+      for (const e of data.engines) {
+        const key = wildcardKey(e.url);
+        if (!existingKeys.has(key)) {
+          fullList.push(e);
+          existingKeys.add(key);
+        }
+      }
+
+      fullList.forEach(engine => {
+        const option = document.createElement('option');
+        option.value = engine.url;
+        option.textContent = engine.name;
+        dropdown.appendChild(option);
+      });
+
+      restoreSelectedEngine(); // ensure correct engine stays selected
+    });
+  }
+
+  function restoreSelectedEngine() {
+    chrome.storage.local.get('selectedEngineUrl', (data) => {
+      const dropdown = document.getElementById('searchEngine');
+      if (dropdown && data.selectedEngineUrl) {
+        dropdown.value = data.selectedEngineUrl;
+        updateExtensionName();
+      }
+    });
+  }
+
+  function updateExtensionName() {
+    const selectedName = searchEngine.options[searchEngine.selectedIndex]?.text || 'Find8';
+    const extName = `Find8 (${selectedName})`;
+    document.getElementById('extensionName').textContent = extName;
+    document.getElementById('extensionNameHeader').textContent = extName;
+  }
 });
