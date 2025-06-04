@@ -42,13 +42,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function normalizeUrl(url) {
   try {
-    return new URL(url).origin + new URL(url).pathname;
-  } catch (e) {
+    const parsed = new URL(url);
+    return parsed.origin + parsed.pathname;
+  } catch {
     return url;
   }
 }
 
-// Load all available engines into dropdown
 function loadEngines() {
   const defaultEngines = [
     { name: "Google", url: "https://www.google.com/search?q=" },
@@ -65,8 +65,8 @@ function loadEngines() {
 
   chrome.storage.local.get({ engines: [] }, (data) => {
     const combined = [...defaultEngines, ...data.engines];
-    const unique = [];
     const seen = new Set();
+    const unique = [];
 
     for (const engine of combined) {
       const norm = normalizeUrl(engine.url);
@@ -88,36 +88,47 @@ function loadEngines() {
   });
 }
 
-// Show last detected engine and handle save
-chrome.storage.local.get('lastSuggestedEngine', (data) => {
+// Show suggestion if not already saved
+chrome.storage.local.get(['lastSuggestedEngine', 'engines'], (data) => {
   const container = document.getElementById('suggestions');
-  if (data.lastSuggestedEngine) {
-    const engine = data.lastSuggestedEngine;
-    container.innerHTML = `
-      <p>Detected engine: <strong>${engine.name}</strong></p>
-      <button id="saveEngineBtn">Add to Find8</button>
-    `;
+  const suggested = data.lastSuggestedEngine;
+  const savedEngines = data.engines || [];
 
-    document.getElementById('saveEngineBtn').addEventListener('click', () => {
-      chrome.storage.local.get({ engines: [] }, (result) => {
-        const existingEngines = result.engines || [];
-        const normNew = normalizeUrl(engine.url);
+  if (!suggested) return;
 
-        const isDuplicate = existingEngines.some(e => normalizeUrl(e.url) === normNew);
-        if (isDuplicate) {
-          alert(`${engine.name} is already added.`);
-          return;
-        }
+  const normSuggested = normalizeUrl(suggested.url);
+  const alreadyExists = savedEngines.some(e => normalizeUrl(e.url) === normSuggested);
 
-        existingEngines.push(engine);
-        chrome.storage.local.set({ engines: existingEngines }, () => {
-          alert(`Added ${engine.name} to Find8`);
-          chrome.storage.local.remove('lastSuggestedEngine');
-          loadEngines();
-        });
+  if (alreadyExists) {
+    // Clear suggestion if already saved
+    chrome.storage.local.remove('lastSuggestedEngine');
+    return;
+  }
+
+  // Show prompt to add
+  container.innerHTML = `
+    <p>Detected engine: <strong>${suggested.name}</strong></p>
+    <button id="saveEngineBtn">Add to Find8</button>
+  `;
+
+  document.getElementById('saveEngineBtn').addEventListener('click', () => {
+    chrome.storage.local.get({ engines: [] }, (result) => {
+      const current = result.engines || [];
+      const isDuplicate = current.some(e => normalizeUrl(e.url) === normSuggested);
+
+      if (isDuplicate) {
+        alert(`${suggested.name} is already added.`);
+        chrome.storage.local.remove('lastSuggestedEngine');
+        return;
+      }
+
+      current.push(suggested);
+      chrome.storage.local.set({ engines: current }, () => {
+        alert(`Added ${suggested.name} to Find8`);
+        chrome.storage.local.remove('lastSuggestedEngine');
+        loadEngines(); // Refresh dropdown
+        document.getElementById('suggestions').innerHTML = '';
       });
     });
-  } else {
-    container.innerHTML = '';
-  }
+  });
 });
