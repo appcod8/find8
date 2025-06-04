@@ -1,28 +1,52 @@
 // popup.js
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', () => {
   const searchBtn = document.getElementById('searchBtn');
   const searchEngine = document.getElementById('searchEngine');
   const searchQuery = document.getElementById('searchQuery');
 
-  // Load user-added and built-in engines
-  loadEngines();
-
-  // Update the header based on selected engine
-  searchEngine.addEventListener('change', updateExtensionName);
-  updateExtensionName();
-
-  // Perform search when button clicked
-  searchBtn.addEventListener('click', function () {
-    const selectedUrl = searchEngine.value;
-    const query = searchQuery.value.trim();
-    if (!query) {
-      alert('Please enter a search query.');
-      return;
-    }
-    window.open(selectedUrl + encodeURIComponent(query), '_blank');
+  // Load engines and previously selected one
+  loadEngines().then(() => {
+    chrome.storage.local.get('selectedEngine', (data) => {
+      if (data.selectedEngine) {
+        searchEngine.value = data.selectedEngine;
+        updateExtensionName();
+      }
+    });
   });
 
-  // Display last suggested engine (from content.js via background)
+  // Run search
+  searchBtn.addEventListener('click', () => {
+    const selectedEngine = searchEngine.value;
+    const query = searchQuery.value.trim();
+    if (!query) return alert('Please enter a search query.');
+
+    // Save selected engine
+    chrome.storage.local.set({ selectedEngine });
+
+    // Perform search
+    window.open(selectedEngine + encodeURIComponent(query), '_blank');
+  });
+
+  // Update title
+  searchEngine.addEventListener('change', () => {
+    const selectedEngine = searchEngine.value;
+    chrome.storage.local.set({ selectedEngine });
+    updateExtensionName();
+  });
+
+  // Display name update
+  function updateExtensionName() {
+    const selectedEngine = searchEngine.value;
+    let label = 'Find8';
+    try {
+      const parsed = new URL(selectedEngine);
+      label += ` (${parsed.hostname})`;
+    } catch (e) {}
+    document.getElementById('extensionName').textContent = label;
+    document.getElementById('extensionNameHeader').textContent = label;
+  }
+
+  // Handle auto-detected engine suggestion
   chrome.storage.local.get('lastSuggestedEngine', (data) => {
     if (data.lastSuggestedEngine) {
       const engine = data.lastSuggestedEngine;
@@ -33,13 +57,16 @@ document.addEventListener('DOMContentLoaded', function () {
       `;
 
       document.getElementById('saveEngineBtn').addEventListener('click', () => {
-        // Ask background to persist the engine
-        chrome.runtime.sendMessage({ action: 'addEngine', engine }, (response) => {
-          if (response && response.success) {
-            alert(`Added ${engine.name} to Find8`);
-            chrome.storage.local.remove('lastSuggestedEngine');
-            container.innerHTML = '';
-            loadEngines(); // Refresh list
+        chrome.storage.local.get({ engines: [] }, (result) => {
+          const engines = result.engines;
+          const exists = engines.some(e => e.url === engine.url);
+          if (!exists) {
+            engines.push(engine);
+            chrome.storage.local.set({ engines }, () => {
+              alert(`Added ${engine.name} to Find8`);
+              chrome.storage.local.remove('lastSuggestedEngine');
+              loadEngines();
+            });
           } else {
             alert(`${engine.name} is already added.`);
           }
@@ -47,48 +74,44 @@ document.addEventListener('DOMContentLoaded', function () {
       });
     }
   });
+});
 
-  function updateExtensionName() {
-    const selectedUrl = searchEngine.value;
-    const selectedOption = searchEngine.options[searchEngine.selectedIndex];
-    const label = selectedOption ? selectedOption.textContent : 'Find8';
-    const extName = `Find8 (${label})`;
-    document.getElementById('extensionName').textContent = extName;
-    document.getElementById('extensionNameHeader').textContent = extName;
-  }
-
-  function loadEngines() {
-    const builtInEngines = [
-      { name: "Google", url: "https://www.google.com/search?q=" },
-      { name: "Brave", url: "https://search.brave.com/search?q=" },
-      { name: "Bing", url: "https://www.bing.com/search?q=" },
-      { name: "DuckDuckGo", url: "https://duckduckgo.com/?q=" },
-      { name: "YouTube", url: "https://www.youtube.com/results?search_query=" },
-      { name: "GitHub", url: "https://github.com/search?q=" },
-      { name: "StackOverflow", url: "https://stackoverflow.com/search?q=" },
-      { name: "StackExchange", url: "https://stackexchange.com/search?q=" },
-      { name: "StartPage", url: "https://www.startpage.com/do/search?query=" },
-      { name: "Wikipedia", url: "https://en.wikipedia.org/w/index.php?title=Special:Search&search=" }
-    ];
-
-    chrome.storage.local.get({ engines: [] }, (data) => {
+// Load engines into dropdown
+function loadEngines() {
+  return new Promise((resolve) => {
+    chrome.storage.local.get({ engines: [] }, (result) => {
       const dropdown = document.getElementById('searchEngine');
+      if (!dropdown) return resolve();
+
       dropdown.innerHTML = '';
 
-      const added = new Set();
+      // Built-ins + dynamic
+      const defaultEngines = [
+        { name: "Google", url: "https://www.google.com/search?q=" },
+        { name: "Brave", url: "https://search.brave.com/search?q=" },
+        { name: "Bing", url: "https://www.bing.com/search?q=" },
+        { name: "DuckDuckGo", url: "https://duckduckgo.com/?q=" },
+        { name: "Wikipedia", url: "https://en.wikipedia.org/w/index.php?search=" },
+        { name: "GitHub", url: "https://github.com/search?q=" },
+        { name: "Stack Overflow", url: "https://stackoverflow.com/search?q=" },
+        { name: "Startpage", url: "https://www.startpage.com/do/search?query=" },
+        { name: "YouTube", url: "https://www.youtube.com/results?search_query=" }
+      ];
 
-      // Merge built-in + custom
-      const allEngines = [...builtInEngines, ...data.engines];
+      const allEngines = [...defaultEngines, ...result.engines];
+      const seen = new Set();
 
       allEngines.forEach(engine => {
-        if (!added.has(engine.url)) {
-          added.add(engine.url);
+        if (!seen.has(engine.url)) {
+          seen.add(engine.url);
           const option = document.createElement('option');
           option.value = engine.url;
           option.textContent = engine.name;
           dropdown.appendChild(option);
         }
       });
+
+      resolve();
     });
-  }
-});
+  });
+}
