@@ -1,9 +1,14 @@
 # Find8
-
-Easily search across multiple search engines from a single interface. Provides a seamless and efficient way to add newly discovered search engines to further explore online information.
+Search across multiple search engines from a single interface. Offer a fast, clean, privacy-respecting way to easily explore online knowledge.
 
 ---
 [![Chrome Web Store](https://img.shields.io/chrome-web-store/v/podlebodapccbabemoihfnpfhebfoogf?label=Install%20from%20Chrome%20Web%20Store)](https://chromewebstore.google.com/detail/find8/podlebodapccbabemoihfnpfhebfoogf)
+
+---
+
+## Privacy First
+This extension does **not collect or store any user data.**  
+No analytics, no tracking, no third-party scripts—everything runs locally in your browser.
 
 ---
 
@@ -12,10 +17,6 @@ Easily search across multiple search engines from a single interface. Provides a
 - Quickly switch between engines using a dropdown menu
 - Compact popup UI for quick access
 - **Omnibox support:** search straight from the address bar
-
-- **Automatically** suggests adding newly discovered search engine. 
-
-Custom Search Behavior: Supports flexible configurations to match your preferences.
 
 ---
 
