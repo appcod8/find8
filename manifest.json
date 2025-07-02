@@ -1,7 +1,7 @@
 {
-  "name": "Find8: Find Easily Auto Discover Search Engines (No Ads, No Tracking)",
+  "name": "Find8: Find Easily What You Search, Auto Discover & Switch Search Engines ",
   "version": "2.7.1",
-  "description": "Quickly find search switch between multiple search engines. Find and auto add discover new search engines.",
+  "description": "Find easily, quickly switch between multiple search engines. Automatically discover add new engines. 100% private — no ads, no tracking.",
   "manifest_version": 3,
   "action": {
     "default_popup": "popup.html",
