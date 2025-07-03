@@ -50,7 +50,7 @@ Install directly:
 [**→ Find8 on Chrome Web Store**](https://chromewebstore.google.com/detail/find8/podlebodapccbabemoihfnpfhebfoogf?authuser=0&hl=en&pli=1)
 
 ### From GitHub Releases
-1. Download the latest `.crx` file from the [Releases page](https://github.com/appcod8/find8/releases)
+1. Download if available `.crx` file from the [Releases page](https://github.com/appcod8/find8/releases)
 2. Go to `chrome://extensions/` or `brave://extensions/`
 3. Enable **Developer Mode**
 4. Drag and drop the `.crx` file
