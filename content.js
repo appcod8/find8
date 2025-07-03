@@ -1,8 +1,5 @@
 // content.js
-
 // console.log('Content script loaded');
-// Exmpl: Change background  
-document.body.style.backgroundColor = "lightblue";
 
 (function () {
   const forms = document.querySelectorAll('form[method="get"], form:not([method])');
